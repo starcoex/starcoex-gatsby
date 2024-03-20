@@ -10,6 +10,10 @@ const config: GatsbyConfig = {
   // Learn more at: https://gatsby.dev/graphql-typegen
   graphqlTypegen: true,
   plugins: [
+    "gatsby-plugin-image",
+    "gatsby-plugin-sharp",
+    "gatsby-plugin-mdx",
+    "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -17,10 +21,7 @@ const config: GatsbyConfig = {
         path: `${__dirname}/blog`,
       },
     },
-    "gatsby-plugin-image",
-    "gatsby-plugin-sharp",
-    "gatsby-plugin-mdx",
-    "gatsby-transformer-sharp",
+
     // {
     //   resolve: `gatsby-plugin-emotion`,
     //   options: {
