@@ -1,5 +1,5 @@
-import { Link, PageProps, graphql } from "gatsby";
 import React from "react";
+import { Link, PageProps, graphql } from "gatsby";
 export default function Info({ data }: PageProps<Queries.MetaDataQuery>) {
   console.log(data);
   return (

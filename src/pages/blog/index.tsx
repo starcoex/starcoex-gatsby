@@ -1,11 +1,9 @@
 import React from "react";
-import Layout from "../../components/layout";
-import Seo from "../../components/seo";
+import Layout from "../../components/Layout";
+import Seo from "../../components/SEO";
 import { Link, PageProps, graphql } from "gatsby";
 
-export default function BlogPage({
-  data,
-}: PageProps<Queries.BlogMdxDataQuery>) {
+export default function BlogPage({ data }: PageProps<Queries.BlogMdxDataQuery>) {
   return (
     <Layout pageTitle="My Blog Posts">
       {data.allMdx.nodes.map((node) => (

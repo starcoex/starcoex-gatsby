@@ -1,8 +1,8 @@
 import { Link } from "gatsby";
 import { title } from "process";
 import React from "react";
-import Layout from "../components/layout";
-import Seo from "../components/seo";
+import Layout from "../components/Layout";
+import Seo from "../components/SEO";
 
 export default function About() {
   return (
