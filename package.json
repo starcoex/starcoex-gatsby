@@ -23,6 +23,7 @@
     "gatsby-plugin-emotion": "^8.13.1",
     "gatsby-plugin-image": "^3.13.1",
     "gatsby-plugin-mdx": "^5.13.1",
+    "gatsby-plugin-reading-time-2": "^0.1.1",
     "gatsby-plugin-sharp": "^5.13.1",
     "gatsby-plugin-styled-components": "^6.13.1",
     "gatsby-remark-reading-time": "^1.1.0",

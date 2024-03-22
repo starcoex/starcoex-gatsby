@@ -4,6 +4,7 @@ import { ThemeProvider } from "styled-components";
 // import { container, heading, navLinks, navLinkItem, navLinkText, siteTitle } from "./layout.module.css";
 import { GlobalStyles, darkTheme, lightTheme } from "../../styles/GlobalStyles";
 import { useMetaDataQuery } from "../../hooks/useMetaDataQuery";
+import Header from "../Header";
 
 interface ILayoutProps {
   pageTitle?: string;
@@ -26,6 +27,7 @@ export default function Layout({ pageTitle, children }: ILayoutProps) {
   return (
     <ThemeProvider theme={darkTheme}>
       <GlobalStyles />
+      <Header siteTitle={data.site?.siteMetadata?.title!} />
       <div>
         <header>{data.site?.siteMetadata?.title}</header>
         <nav>
