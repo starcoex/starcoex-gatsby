@@ -4,14 +4,23 @@ import { createFilePath } from "gatsby-source-filesystem";
 import { title } from "process";
 
 interface IAllMarkdownRemarkProps {
-  allMarkdownRemark: {
+  posts: {
     edges: {
       node: {
         frontmatter: {
-          date: Date;
+          published: boolean;
+        };
+        fields: {
           slug: string;
-          title: string;
-          published: string;
+        };
+      };
+    }[];
+  };
+  pages: {
+    edges: {
+      node: {
+        fields: {
+          slug: string;
         };
       };
     }[];
@@ -30,7 +39,6 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, getNode, action
       getNode,
       basePath: `content`,
     });
-    console.log(slug);
     createNodeField({
       node,
       name: `slug`,
@@ -40,17 +48,18 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, getNode, action
 };
 export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
-  const postTemplate = path.resolve(`src/templates/PostTemplate.tsx`);
-  const result = await graphql(`
+  const postTemplate = path.resolve(`./src/templates/PostTemplate.tsx`);
+  const pageTemplate = path.resolve(`./src/templates/PageTemplate.tsx`);
+  const result = await graphql<IAllMarkdownRemarkProps>(`
     query loadPagesQuery {
       posts: allMarkdownRemark(filter: { frontmatter: { type: { eq: "post" } } }) {
         edges {
           node {
             frontmatter {
               published
+            }
+            fields {
               slug
-              title
-              date
             }
           }
         }
@@ -58,28 +67,43 @@ export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql,
       pages: allMarkdownRemark(filter: { frontmatter: { type: { eq: "page" } } }) {
         edges {
           node {
-            frontmatter {
+            fields {
               slug
-              title
-              date
             }
           }
         }
       }
     }
   `);
-  // if (result.errors || !result.data) {
-  //   reporter.panicOnBuild(`Error while running GraphQL query.`);
-  //   return;
-  // }
-
+  if (result.errors || !result.data) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`);
+    return;
+  }
+  const allPosts = result.data.posts.edges;
+  const allPages = result.data.pages.edges;
   console.log(result);
-  result.data?.posts.allMarkdownRemark.edges.forEach((edge) => {
+  allPosts.forEach((node) => {
+    if (node.node.frontmatter.published) {
+      createPage({
+        path: node.node.fields.slug,
+        // component: path.resolve(`./src/templates/PostTemplate.tsx`),
+
+        component: postTemplate,
+        context: {
+          slug: node.node.fields.slug,
+        },
+      });
+    }
+  });
+
+  allPages.forEach((node) => {
     createPage({
-      path: `${edge.node.frontmatter?.slug}`,
-      component: postTemplate,
+      path: node.node.fields.slug,
+      // component: path.resolve(`./src/templates/PostTemplate.tsx`),
+
+      component: pageTemplate,
       context: {
-        title: edge.node.frontmatter?.title,
+        path: node.node.fields.slug,
       },
     });
   });

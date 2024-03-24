@@ -26,8 +26,8 @@ export default function PageTemplate({ data }: IPageTemplateProps) {
 }
 
 export const query = graphql`
-  query PageTemplateData($id: String) {
-    markdownRemark(id: { eq: $id }) {
+  query PageTemplateData($slug: String) {
+    markdownRemark(frontmatter: { slug: { eq: $slug } }) {
       html
       frontmatter {
         title

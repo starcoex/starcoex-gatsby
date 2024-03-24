@@ -24,8 +24,8 @@ export default function PostTemplate({ data, image }: IPostTemplateProps) {
 }
 
 export const query = graphql`
-  query PostTemplateData($id: String) {
-    markdownRemark(id: { eq: $id }) {
+  query PostTemplateData($slug: String) {
+    markdownRemark(frontmatter: { slug: { eq: $slug } }) {
       html
       frontmatter {
         title
