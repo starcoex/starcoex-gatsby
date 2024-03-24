@@ -1,4 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { ToggleIcon } from "../../styles/ToggleIcon.styles";
+import { collectSlices } from "gatsby/dist/utils/babel/find-slices";
 
 interface IToggleModeProps {
   menuOpen: boolean;
@@ -7,8 +9,9 @@ interface IToggleModeProps {
 
 export default function ToggleMode({ menuOpen, setMenuOpen }: IToggleModeProps) {
   return (
-    <div>
+    <ToggleIcon role="button" menuOpen={menuOpen} onClick={() => setMenuOpen((prev) => !prev)}>
       <div />
-    </div>
+      {/* <div /> */}
+    </ToggleIcon>
   );
 }

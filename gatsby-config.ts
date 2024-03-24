@@ -13,11 +13,7 @@ const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: [
     "gatsby-plugin-image",
-    "gatsby-plugin-sharp",
     "gatsby-plugin-mdx",
-    "gatsby-transformer-sharp",
-    // `gatsby-transformer-remark`,
-    // "gatsby-remark-reading-time",
     `gatsby-plugin-styled-components`,
     // {
     //   resolve: `gatsby-plugin-styled-components`,
@@ -43,7 +39,7 @@ const config: GatsbyConfig = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: `blog`,
-        path: `${__dirname}/blog`,
+        path: `${__dirname}/starblog`,
       },
     },
     {
@@ -53,6 +49,8 @@ const config: GatsbyConfig = {
         path: `${__dirname}/src/images`,
       },
     },
+    `gatsby-plugin-sharp`,
+    "gatsby-transformer-sharp",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -64,7 +62,7 @@ const config: GatsbyConfig = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: `posts`,
-        path: `${__dirname}/posts`,
+        path: `${__dirname}/starposts`,
       },
     },
 
