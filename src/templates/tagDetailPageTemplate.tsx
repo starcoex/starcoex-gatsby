@@ -1,6 +1,5 @@
 import React from "react";
 import Layout from "../components/Layout";
-import { title } from "process";
 import { graphql, PageProps } from "gatsby";
 
 interface ITagDetailPageTemplateDataProps {

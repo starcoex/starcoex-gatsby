@@ -11,7 +11,6 @@ export default function ToggleMode({ menuOpen, setMenuOpen }: IToggleModeProps) 
   return (
     <ToggleIcon role="button" menuOpen={menuOpen} onClick={() => setMenuOpen((prev) => !prev)}>
       <div />
-      {/* <div /> */}
     </ToggleIcon>
   );
 }

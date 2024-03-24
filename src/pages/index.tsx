@@ -7,19 +7,33 @@ import Hero from "../components/Hero";
 import BlogPostCard from "../components/BlogPostCard";
 import { HeroWrapper } from "../styles/Hero.styles";
 import styled from "styled-components";
+import { title } from "process";
 
 // interface IBlogListProps {
 //   data: Queries.BlogListQuery;
 // }
 
-const IndexPage = ({ data }: PageProps<Queries.BlogListQuery>) => {
+const IndexPage = ({ data }: { data: Queries.BlogListQuery }) => {
   const posts = data.allMarkdownRemark.edges;
   return (
     <Layout>
       <Seo title="Home" />
       <Hero />
       <main>
-        <BlogPostCard />
+        {posts.map(({ node }, index) => {
+          const title = node.frontmatter?.title;
+          return (
+            <BlogPostCard
+              key={index}
+              slug={node.frontmatter?.slug!}
+              title={title!}
+              date={node.frontmatter?.date!}
+              readingTime={node.fields?.readingTime?.text!}
+              excerpt={node.excerpt!}
+              image={node.frontmatter?.image?.childImageSharp?.gatsbyImageData!}
+            />
+          );
+        })}
       </main>
       {/* <p>지금부터 시작합니다. 개츠비 튜토리얼을....</p> */}
       {/* <StaticImage
@@ -49,10 +63,8 @@ export const indexQuery = graphql`
             slug
             title
             image {
-              childrenImageSharp {
-                fluid(maxWidth: 200, maxHeight: 200) {
-                  ...GatsbyImageSharpFluid
-                }
+              childImageSharp {
+                gatsbyImageData(height: 200, width: 200)
               }
             }
           }

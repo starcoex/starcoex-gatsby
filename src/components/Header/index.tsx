@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Layout from "../Layout";
 import { useSiteConfigQuery } from "../../hooks/useSiteConfigQuery";
 import { Link } from "gatsby";
@@ -6,6 +6,8 @@ import { Logo, Wrapper } from "../../styles/Header.styles";
 import Menu from "../Menu";
 import ToggleMode from "../ToggleMode";
 import MobileMenu from "../MobileMenu";
+import { ModeContext } from "../context/ModeProvider";
+import ModeButton from "../ModeButton";
 
 interface IHeaderProps {
   siteTitle: string;
@@ -13,6 +15,7 @@ interface IHeaderProps {
 
 export default function Header({ siteTitle }: IHeaderProps) {
   const data = useSiteConfigQuery();
+  const [darkMode, setDarkMode] = useContext(ModeContext);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <Wrapper>
@@ -23,6 +26,7 @@ export default function Header({ siteTitle }: IHeaderProps) {
         <Logo src={data.markdownRemark?.frontmatter?.logo?.publicURL!} alt={siteTitle} />
       </Link>
       <div>Mode Button</div>
+      <ModeButton darkMode={darkMode} setDarkMode={setDarkMode} />
     </Wrapper>
   );
 }

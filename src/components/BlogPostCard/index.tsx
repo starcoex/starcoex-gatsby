@@ -7,24 +7,42 @@ import {
   StatWrapper,
   TextWrapper,
 } from "../../styles/BlogPostCard.styles";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, IGatsbyImageData } from "gatsby-plugin-image";
+import { Link } from "gatsby";
+import DateIcon from "../../images/calendar.svg";
+import TimeIcon from "../../images/watch.svg";
 
-export default function BlogPostCard() {
+interface IBlogPostCardProps {
+  slug: string;
+  image: IGatsbyImageData;
+  title: string;
+  readingTime: string;
+  excerpt: string;
+  date: string;
+}
+
+export default function BlogPostCard({ slug, image, title, readingTime, excerpt, date }: IBlogPostCardProps) {
   return (
     <CardWrapper>
       <ImgWrapper>
-        {/* <GatsbyImage image={image} /> */}
-        image
+        <GatsbyImage image={image} alt={title} />
       </ImgWrapper>
       <TextWrapper>
-        text
+        <Link to={slug}>
+          <h2>{title}</h2>
+        </Link>
         <StatWrapper>
-          state
-          <DateWrapper>2024</DateWrapper>
-          <ReadingTimeWrapper>reading</ReadingTimeWrapper>
+          <DateWrapper>
+            <img src={DateIcon} alt="date" />
+            {date}
+          </DateWrapper>
+          <ReadingTimeWrapper>
+            <img src={TimeIcon} alt="time" />
+            {readingTime}
+          </ReadingTimeWrapper>
         </StatWrapper>
+        <p>{excerpt}</p>
       </TextWrapper>
-      BlogPost
     </CardWrapper>
   );
 }

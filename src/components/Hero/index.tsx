@@ -1,15 +1,9 @@
 import { graphql, Link, PageProps } from "gatsby";
 import React from "react";
 import { useHeroQuery } from "../../hooks/useHeroQuery";
-import { Wrapper, FakeBGImage, Content } from "../../styles/BGImage.styles";
 import BGImage from "../BGImage";
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { getImage } from "gatsby-plugin-image";
 import { HeroWrapper, TextWrapper } from "../../styles/Hero.styles";
-
-interface IHeroProps {
-  data: any;
-  // children: React.ReactNode;
-}
 
 export default function Hero() {
   const data = useHeroQuery();

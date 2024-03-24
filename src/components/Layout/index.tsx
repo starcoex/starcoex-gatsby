@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyles, darkTheme } from "../../styles/GlobalStyles";
+import { GlobalStyles, darkTheme, lightTheme } from "../../styles/GlobalStyles";
 import { useMetaDataQuery } from "../../hooks/useMetaDataQuery";
 import Header from "../Header";
+import { ModeContext } from "../context/ModeProvider";
 
 interface ILayoutProps {
   pageTitle?: string;
@@ -11,8 +12,9 @@ interface ILayoutProps {
 
 export default function Layout({ pageTitle, children }: ILayoutProps) {
   const data = useMetaDataQuery();
+  const [darkMode] = useContext(ModeContext);
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <GlobalStyles />
       <Header siteTitle={data.site?.siteMetadata?.title!} />
       {children}

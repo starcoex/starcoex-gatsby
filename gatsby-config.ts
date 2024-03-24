@@ -29,12 +29,7 @@ const config: GatsbyConfig = {
     //     remarkPlugins: [...],
     //   },
     // },
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        plugins: [`gatsby-remark-reading-time`],
-      },
-    },
+
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -63,6 +58,12 @@ const config: GatsbyConfig = {
       options: {
         name: `posts`,
         path: `${__dirname}/starposts`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [`gatsby-remark-reading-time`],
       },
     },
 
