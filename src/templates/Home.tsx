@@ -1,31 +1,35 @@
 import * as React from "react";
 import { graphql, Link, type HeadFC, type PageProps } from "gatsby";
 import Layout from "../components/Layout";
-import { StaticImage } from "gatsby-plugin-image";
 import Seo from "../components/SEO";
 import Hero from "../components/Hero";
 import BlogPostCard from "../components/BlogPostCard";
-import { HeroWrapper } from "../styles/Hero.styles";
-import styled from "styled-components";
-import { title } from "process";
+import PageNavigation from "../components/PageNavigation";
 
-// interface IBlogListProps {
-//   data: Queries.BlogListQuery;
-// }
+interface IHomeProps extends PageProps {
+  data: Queries.BlogListQuery;
+  pageContext: {
+    limit: number;
+    skip: number;
+    numPages: number;
+    currentPage: number;
+  };
+}
 
-const IndexPage = ({ data }: { data: Queries.BlogListQuery }) => {
+const Home = ({ data, pageContext }: IHomeProps) => {
   const posts = data.allMarkdownRemark.edges;
   return (
     <Layout>
       <Seo title="Home" />
       <Hero />
       <main>
+        <PageNavigation currentPage={pageContext.currentPage} numPages={pageContext.numPages} />
         {posts.map(({ node }, index) => {
           const title = node.frontmatter?.title;
           return (
             <BlogPostCard
               key={index}
-              slug={node.frontmatter?.slug!}
+              slug={node.fields?.slug!}
               title={title!}
               date={node.frontmatter?.date!}
               readingTime={node.fields?.readingTime?.text!}
@@ -35,32 +39,32 @@ const IndexPage = ({ data }: { data: Queries.BlogListQuery }) => {
           );
         })}
       </main>
-      {/* <p>지금부터 시작합니다. 개츠비 튜토리얼을....</p> */}
-      {/* <StaticImage
-        alt="Clifford, a reddish-brown pitbull, posing on a couch and looking stoically at the camera"
-        src="https://pbs.twimg.com/media/E1oMV3QVgAIr1NT?format=jpg&name=large"
-      /> */}
     </Layout>
   );
 };
 
-export default IndexPage;
+export default Home;
 
 export const Head: HeadFC = () => <Seo title="Home Page" />;
 
 export const indexQuery = graphql`
-  query BlogList {
-    allMarkdownRemark(filter: { frontmatter: { type: { eq: "post" } } }, sort: { frontmatter: { date: DESC } }) {
+  query BlogList($limit: Int = 10, $skip: Int = 10) {
+    allMarkdownRemark(
+      limit: $limit
+      skip: $skip
+      filter: { frontmatter: { type: { eq: "post" }, published: { eq: true } } }
+      sort: { frontmatter: { date: DESC } }
+    ) {
       edges {
         node {
           fields {
+            slug
             readingTime {
               text
             }
           }
           frontmatter {
             date
-            slug
             title
             image {
               childImageSharp {

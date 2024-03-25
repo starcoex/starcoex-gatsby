@@ -1,7 +1,7 @@
 import { graphql, PageProps } from "gatsby";
 import { indexQuery } from "../pages/index";
 
-export function useIndexQuery() {
+function useIndexQuery() {
   const IndexData = graphql`
     query BlogList {
       allMarkdownRemark(filter: { frontmatter: { type: { eq: "post" } } }, sort: { frontmatter: { date: DESC } }) {

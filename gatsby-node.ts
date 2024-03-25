@@ -1,7 +1,6 @@
-import type { GatsbyNode } from "gatsby";
+import type { GatsbyNode, PageProps } from "gatsby";
 import path from "path";
 import { createFilePath } from "gatsby-source-filesystem";
-import { title } from "process";
 
 interface IAllMarkdownRemarkProps {
   posts: {
@@ -50,7 +49,8 @@ export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql,
   const { createPage } = actions;
   const postTemplate = path.resolve(`./src/templates/PostTemplate.tsx`);
   const pageTemplate = path.resolve(`./src/templates/PageTemplate.tsx`);
-  const result = await graphql<IAllMarkdownRemarkProps>(`
+  const home = path.resolve(`./src/templates/Home.tsx`);
+  const result = await graphql<Queries.loadPagesQueryQuery>(`
     query loadPagesQuery {
       posts: allMarkdownRemark(filter: { frontmatter: { type: { eq: "post" } } }) {
         edges {
@@ -79,18 +79,17 @@ export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql,
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     return;
   }
+
   const allPosts = result.data.posts.edges;
   const allPages = result.data.pages.edges;
-  console.log(result);
-  allPosts.forEach((node) => {
-    if (node.node.frontmatter.published) {
-      createPage({
-        path: node.node.fields.slug,
-        // component: path.resolve(`./src/templates/PostTemplate.tsx`),
 
+  allPosts.forEach((node) => {
+    if (node.node.frontmatter?.published) {
+      createPage({
+        path: `${node.node.fields?.slug}`,
         component: postTemplate,
         context: {
-          slug: node.node.fields.slug,
+          slug: node.node.fields?.slug,
         },
       });
     }
@@ -98,12 +97,25 @@ export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql,
 
   allPages.forEach((node) => {
     createPage({
-      path: node.node.fields.slug,
-      // component: path.resolve(`./src/templates/PostTemplate.tsx`),
-
+      path: `${node.node.fields?.slug}`,
       component: pageTemplate,
       context: {
-        path: node.node.fields.slug,
+        slug: node.node.fields?.slug,
+      },
+    });
+  });
+
+  const postsPerPage = 5;
+  const numPages = Math.ceil(allPosts.length / postsPerPage);
+  Array.from({ length: numPages }).forEach((_, index) => {
+    createPage({
+      path: index === 0 ? `/` : `/${index + 1}`,
+      component: home,
+      context: {
+        limit: postsPerPage,
+        skip: index * postsPerPage,
+        numPages,
+        currentPage: index + 1,
       },
     });
   });
